@@ -1,0 +1,90 @@
+I’m putting together the exact commands you can run to refresh the Kubernetes context and verify access before attempting the Helm install again.
+
+Here are the main commands you can use to update your kubeconfig and verify basic kubectl access.
+
+## 1) Check current context
+```powershell
+kubectl config current-context
+kubectl config view --minify
+```
+
+## 2) Update kubeconfig for an EKS cluster
+If you know the cluster name and region:
+```powershell
+aws eks update-kubeconfig --name <cluster-name> --region <region>
+```
+
+Example:
+```powershell
+aws eks update-kubeconfig --name sre-eks --region us-east-1
+```
+
+If your Terraform setup uses a different cluster name, check it first in the Terraform files or AWS console.
+
+## 3) Verify the cluster is reachable
+```powershell
+kubectl cluster-info
+kubectl get nodes
+```
+
+## 4) Check available contexts
+```powershell
+kubectl config get-contexts
+```
+
+## 5) Switch to the correct context
+```powershell
+kubectl config use-context <context-name>
+```
+
+## 6) Verify Helm can reach the cluster
+```powershell
+helm list
+```
+
+## 7) If AWS CLI is not configured
+```powershell
+aws configure
+```
+
+## 8) If you want to test the exact cluster endpoint
+```powershell
+aws eks describe-cluster --name <cluster-name> --region <region> --query "cluster.endpoint" --output text
+```
+
+## 9) If the cluster name is unknown
+```powershell
+aws eks list-clusters --region us-east-1
+```
+
+> The main issue in your case is that the current kubeconfig points to an EKS endpoint that cannot be resolved locally, so refreshing the kubeconfig is the first fix to try.
+
+If you want, I can also give you a compact copy-paste block tailored to your repo’s Terraform cluster name.
+
+git --version
+python --version
+docker --version
+aws --version
+helm version
+kubectl version --client
+
+Deploy Manually (for testing)
+
+Once your EKS cluster is ready:
+
+aws eks update-kubeconfig \
+  --region eu-north-1 \
+  --name sre-eks
+
+Deploy:
+
+helm upgrade --install flask-app ./helm/flask-app \
+  --set image.repository=<AWS_ACCOUNT_ID>.dkr.ecr.eu-north-1.amazonaws.com/flask-app \
+  --set image.tag=latest
+
+Verify:
+
+kubectl get pods
+kubectl get svc
+kubectl get deployments
+kubectl rollout status deployment/flask-app
