@@ -15,33 +15,33 @@ module "eks" {
   create_iam_role = false
   iam_role_arn    = var.cluster_role_arn
 
-#################################################
-# EKS API Endpoint
-#################################################
+  #################################################
+  # EKS API Endpoint
+  #################################################
 
-# Makes the Kubernetes API server accessible over the internet.
-# This allows kubectl, Helm, and GitHub Actions running outside
-# the VPC to connect to and manage the EKS cluster.
-cluster_endpoint_public_access = true
+  # Makes the Kubernetes API server accessible over the internet.
+  # This allows kubectl, Helm, and GitHub Actions running outside
+  # the VPC to connect to and manage the EKS cluster.
+  cluster_endpoint_public_access = true
 
-#################################################
-# Authentication
-#################################################
+  #################################################
+  # Authentication
+  #################################################
 
-# Enables both the new EKS Access Entry API and the traditional
-# aws-auth ConfigMap for IAM authentication.
-# This allows IAM users and roles to authenticate to the cluster.
-authentication_mode = "API_AND_CONFIG_MAP"
+  # Enables both the new EKS Access Entry API and the traditional
+  # aws-auth ConfigMap for IAM authentication.
+  # This allows IAM users and roles to authenticate to the cluster.
+  authentication_mode = "API_AND_CONFIG_MAP"
 
-#################################################
-# IAM Roles for Service Accounts (IRSA)
-#################################################
+  #################################################
+  # IAM Roles for Service Accounts (IRSA)
+  #################################################
 
-# Enables IRSA, allowing Kubernetes Service Accounts to assume
-# dedicated IAM roles. This gives individual pods least-privilege
-# access to AWS services (such as S3, DynamoDB, or Secrets Manager)
-# instead of using the worker node's IAM role.
-enable_irsa = true
+  # Enables IRSA, allowing Kubernetes Service Accounts to assume
+  # dedicated IAM roles. This gives individual pods least-privilege
+  # access to AWS services (such as S3, DynamoDB, or Secrets Manager)
+  # instead of using the worker node's IAM role.
+  enable_irsa = true
 
   #################################################
   # We'll create node groups separately
@@ -63,8 +63,8 @@ enable_irsa = true
     }
   }
 
-#It won't scale automatically because I haven't installed Cluster Autoscaler or Karpenter. 
-#The values desired_size, min_size, and max_size only define the allowed range of nodes.
+  #It won't scale automatically because I haven't installed Cluster Autoscaler or Karpenter. 
+  #The values desired_size, min_size, and max_size only define the allowed range of nodes.
 
   eks_managed_node_groups = {
 

@@ -27,11 +27,11 @@ module "vpc" {
 
   enable_dns_hostnames = true
   enable_dns_support   = true
-#"These subnets are suitable for internet-facing (public) load balancers."
+  #"These subnets are suitable for internet-facing (public) load balancers."
   public_subnet_tags = {
     "kubernetes.io/role/elb" = "1"
   }
-#"These subnets are suitable for internal load balancers."
+  #"These subnets are suitable for internal load balancers."
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = "1"
   }
