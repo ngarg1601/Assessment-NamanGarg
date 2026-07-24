@@ -1,0 +1,7 @@
+apiVersion: v2
+name: flask-app
+description: Flask Demo Application deployed to EKS
+type: application
+
+version: 0.1.1
+appVersion: "1.0.1"

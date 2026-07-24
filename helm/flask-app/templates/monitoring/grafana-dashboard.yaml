@@ -1,0 +1,23 @@
+{{- if .Values.monitoring.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-app-grafana-dashboard
+  labels:
+    grafana_dashboard: "1"
+data:
+  flask-app.json: |
+    {
+      "title": "Flask App Overview",
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 1,
+      "panels": [
+        {
+          "type": "graph",
+          "title": "Request Rate",
+          "targets": [{ "expr": "rate(flask_http_requests_total[1m])", "legendFormat": "requests" }]
+        }
+      ]
+    }
+{{- end }}
