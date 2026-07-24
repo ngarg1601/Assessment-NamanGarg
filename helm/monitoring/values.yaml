@@ -1,0 +1,13 @@
+prometheus:
+  enabled: true
+  service:
+    type: LoadBalancer
+    port: 9090
+
+grafana:
+  enabled: true
+  service:
+    type: LoadBalancer
+    port: 3000
+  adminUser: admin
+  adminPassword: admin
